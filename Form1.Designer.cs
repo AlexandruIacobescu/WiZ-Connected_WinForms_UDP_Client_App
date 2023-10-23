@@ -67,6 +67,7 @@
             pictureBox1 = new PictureBox();
             button4 = new Button();
             groupBox5 = new GroupBox();
+            label13 = new Label();
             button9 = new Button();
             label10 = new Label();
             trackBar7 = new TrackBar();
@@ -489,6 +490,7 @@
             // 
             // groupBox5
             // 
+            groupBox5.Controls.Add(label13);
             groupBox5.Controls.Add(button9);
             groupBox5.Controls.Add(label10);
             groupBox5.Controls.Add(trackBar7);
@@ -501,6 +503,15 @@
             groupBox5.TabStop = false;
             groupBox5.Text = "Scenes";
             // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new Point(848, 170);
+            label13.Name = "label13";
+            label13.Size = new Size(113, 41);
+            label13.TabIndex = 5;
+            label13.Text = "label13";
+            // 
             // button9
             // 
             button9.Location = new Point(76, 262);
@@ -509,6 +520,7 @@
             button9.TabIndex = 4;
             button9.Text = "Set";
             button9.UseVisualStyleBackColor = true;
+            button9.Click += button9_Click;
             // 
             // label10
             // 
@@ -526,10 +538,11 @@
             trackBar7.Maximum = 200;
             trackBar7.Minimum = 10;
             trackBar7.Name = "trackBar7";
-            trackBar7.Size = new Size(724, 114);
+            trackBar7.Size = new Size(652, 114);
             trackBar7.SmallChange = 10;
             trackBar7.TabIndex = 2;
             trackBar7.Value = 10;
+            trackBar7.ValueChanged += trackBar7_ValueChanged;
             // 
             // comboBox2
             // 
@@ -562,7 +575,7 @@
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.OldLace;
+            BackColor = Color.Ivory;
             ClientSize = new Size(2117, 1421);
             Controls.Add(groupBox6);
             Controls.Add(groupBox5);
@@ -644,5 +657,6 @@
         private Button button8;
         private Button button9;
         private GroupBox groupBox6;
+        private Label label13;
     }
 }

@@ -1,9 +1,7 @@
 using System.Net.Sockets;
 using System.Net;
 using System.Text;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace WinFormsApp4
 {
@@ -11,6 +9,8 @@ namespace WinFormsApp4
     {
         // dictionary where key = 'combo_box_item_text' and value = 'corresponding_ip_address'
         Dictionary<string, string> ipstr_ip = new Dictionary<string, string>();
+
+        Dictionary<string, int> scene_id = new Dictionary<string, int>();
 
         static List<string> ScanNetwork(int port)
         {
@@ -169,6 +169,11 @@ namespace WinFormsApp4
             whiteLabel.Text = trackBar6.Value.ToString();
         }
 
+        private void trackBar7_ValueChanged(object sender, EventArgs e)
+        {
+            label13.Text = trackBar7.Value.ToString();
+        }
+
         public static string RGBToHex(int red, int green, int blue)
         {
             Color color = Color.FromArgb(red, green, blue);
@@ -188,9 +193,28 @@ namespace WinFormsApp4
             greenLabel.Text = trackBar5.Value.ToString();
             blueLabel.Text = trackBar3.Value.ToString();
             whiteLabel.Text = trackBar6.Value.ToString();
+            label13.Text = trackBar7.Value.ToString();
 
             // load scenes from json
-            // 
+            string scenes_json = File.ReadAllText("scenes.json");
+            Dictionary<string, int> scenes = JsonConvert.DeserializeObject<Dictionary<string, int>>(scenes_json);
+
+            foreach (var scene in scenes)
+            {
+                comboBox2.Items.Add(scene.Key);
+            }
+            scene_id = scenes;
+
+            // load settings from json
+            string bulbs_json = File.ReadAllText("settings.json");
+            Dictionary<string, string> bulbs = JsonConvert.DeserializeObject<Dictionary<string, string>>(bulbs_json);
+
+            foreach (var bulb in bulbs)
+            {
+                comboBox1.Items.Add($"[{bulb.Value}] [{bulb.Key}]");
+                if (!ipstr_ip.ContainsValue(bulb.Key))
+                    ipstr_ip.Add($"[{bulb.Value}] [{bulb.Key}]", bulb.Key);
+            }
 
             // Initizlize Preview
             pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar4.Value, trackBar5.Value);
@@ -336,6 +360,28 @@ namespace WinFormsApp4
                 {
                     ipstr_ip.Remove(comboBox1.SelectedItem.ToString());
                     comboBox1.Items.Remove(comboBox1.SelectedItem);
+                }
+            }
+            else
+            {
+                ErrorLabelShowFor("No Bulb Selected", 1000);
+            }
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            if (comboBox2.SelectedItem != null && comboBox1.SelectedItem != null)
+            {
+                string hostIp = ipstr_ip[comboBox1.SelectedItem.ToString()];
+                string scene = comboBox2.SelectedItem.ToString();
+                int scene_id_int = scene_id[scene];
+                string payload1 = $"{{\"method\":\"setPilot\",\"params\":{{\"state\":true,\"sceneid\":{scene_id_int}}}}}";
+                string payload2 = $"{{\"method\":\"setPilot\",\"params\":{{\"speed\":{trackBar7.Value}}}}}";
+
+                if (hostIp != null)
+                {
+                    SendUdpPayload(hostIp, 38899, payload1);
+                    SendUdpPayload(hostIp, 38899, payload2);
                 }
             }
             else
