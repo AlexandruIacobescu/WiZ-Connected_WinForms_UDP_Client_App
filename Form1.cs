@@ -12,6 +12,11 @@ namespace WinFormsApp4
 
         Dictionary<string, int> scene_id = new Dictionary<string, int>();
 
+        private Dictionary<string, bool> cachedSettings = new Dictionary<string, bool>();
+
+        private Dictionary<string, List<string>> groups = new();
+
+
         static List<string> ScanNetwork(int port)
         {
             var s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
@@ -88,27 +93,7 @@ namespace WinFormsApp4
                     ErrorLabelShowFor("Bulb name already added", 1000);
                 }
             }
-        }
-
-        public static void SendUdpPayload(string hostIp, int port, string payload)
-        {
-            try
-            {
-                using (UdpClient udpClient = new UdpClient())
-                {
-                    IPAddress ipAddress = IPAddress.Parse(hostIp);
-                    IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
-
-                    byte[] payloadBytes = Encoding.UTF8.GetBytes(payload);
-                    udpClient.Send(payloadBytes, payloadBytes.Length, endPoint);
-                    Console.WriteLine("UDP payload sent successfully.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error sending UDP payload: {ex.Message}");
-            }
-        }
+        }        
 
         async private void SuccessLabelShowFor(string msg, int delay)
         {
@@ -194,6 +179,9 @@ namespace WinFormsApp4
             blueLabel.Text = trackBar3.Value.ToString();
             whiteLabel.Text = trackBar6.Value.ToString();
             label13.Text = trackBar7.Value.ToString();
+            comboBox3.Items.Add("(None)");
+            comboBox3.Items.Add("(All)");
+            File.WriteAllText("error.log", string.Empty);
 
             // load scenes from json
             string scenes_json = File.ReadAllText("scenes.json");
@@ -205,21 +193,75 @@ namespace WinFormsApp4
             }
             scene_id = scenes;
 
-            // load settings from json
-            string bulbs_json = File.ReadAllText("settings.json");
-            Dictionary<string, string> bulbs = JsonConvert.DeserializeObject<Dictionary<string, string>>(bulbs_json);
-
-            foreach (var bulb in bulbs)
+            // load bulb grous from json         
+            try
             {
-                comboBox1.Items.Add($"[{bulb.Value}] [{bulb.Key}]");
-                if (!ipstr_ip.ContainsValue(bulb.Key))
-                    ipstr_ip.Add($"[{bulb.Value}] [{bulb.Key}]", bulb.Key);
+                string groups_json = File.ReadAllText("groups.json");
+                groups = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(groups_json);
+                foreach (var group in groups)
+                {
+                    comboBox3.Items.Add(group.Key);
+                }
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine("File not found: " + ex.Message);
+                File.AppendAllText("error.log", ex.Message + Environment.NewLine);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                File.AppendAllText("error.log", ex.Message + Environment.NewLine);
+            }
+
+            // Load bulbs from json
+            try
+            {
+                string bulbs_json = File.ReadAllText("bulbs.json");
+                Dictionary<string, string> bulbs = JsonConvert.DeserializeObject<Dictionary<string, string>>(bulbs_json);
+
+                foreach (var bulb in bulbs)
+                {
+                    comboBox1.Items.Add($"[{bulb.Value}] [{bulb.Key}]");
+                    if (!ipstr_ip.ContainsValue(bulb.Key))
+                        ipstr_ip.Add($"[{bulb.Value}] [{bulb.Key}]", bulb.Key);
+                }
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine("File not found: " + ex.Message);
+                File.AppendAllText("error.log", ex.Message + Environment.NewLine);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                File.AppendAllText("error.log", ex.Message + Environment.NewLine);
+            }
+
+            // Load cached settings
+            try
+            {
+                string cacheJson = File.ReadAllText("cache.json");
+                cachedSettings = JsonConvert.DeserializeObject<Dictionary<string, bool>>(cacheJson);
+                if (cachedSettings.ContainsKey("checkBox1.Checked"))
+                {
+                    checkBox1.Checked = cachedSettings["checkBox1.Checked"];
+                }
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine("File not found: " + ex.Message);
+                File.AppendAllText("error.log", ex.Message + Environment.NewLine);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                File.AppendAllText("error.log", ex.Message + Environment.NewLine);
             }
 
             // Initizlize Preview
             pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar4.Value, trackBar5.Value);
             label11.Text = RGBToHex(trackBar3.Value, trackBar4.Value, trackBar5.Value);
-
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -247,7 +289,19 @@ namespace WinFormsApp4
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedItem != null)
+            if (comboBox3.SelectedIndex != 0 && comboBox3.SelectedItem != null)
+            {
+                foreach (var line in richTextBox1.Lines)
+                {
+                    if (line != "")
+                    {
+                        string ip = ipstr_ip[line];
+                        Functions.SetBrightness(ip, 38899, trackBar1.Value);
+                    }
+                }
+
+            }
+            else if (comboBox1.SelectedItem != null)
             {
                 string brightnessLevel = trackBar1.Value.ToString();
                 string hostIp = ipstr_ip[comboBox1.SelectedItem.ToString()];
@@ -255,7 +309,7 @@ namespace WinFormsApp4
 
                 if (hostIp != null)
                 {
-                    SendUdpPayload(hostIp, 38899, payload);
+                    Functions.SendUdpPayload(hostIp, 38899, payload);
                 }
             }
             else
@@ -266,15 +320,26 @@ namespace WinFormsApp4
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedItem != null)
+            int kelvins = Int32.Parse(trackBar2.Value.ToString()) * 100;
+            if (comboBox3.SelectedIndex != 0 && comboBox3.SelectedItem != null)
             {
-                string kelvins = (Int32.Parse(trackBar2.Value.ToString()) * 100).ToString();
+                foreach (var line in richTextBox1.Lines)
+                {
+                    if (line != "")
+                    {
+                        string ip = ipstr_ip[line];
+                        Functions.SetTemperature(ip, 38899, kelvins);
+                    }
+                }
+
+            }
+            else if (comboBox1.SelectedItem != null)
+            {
                 string hostIp = ipstr_ip[comboBox1.SelectedItem.ToString()];
-                string payload = $"{{\"method\":\"setPilot\",\"params\":{{\"state\":true,\"temp\":{kelvins}}}}}";
 
                 if (hostIp != null)
                 {
-                    SendUdpPayload(hostIp, 38899, payload);
+                    Functions.SetTemperature(hostIp, 38899, kelvins);
                 }
             }
             else
@@ -300,7 +365,7 @@ namespace WinFormsApp4
 
                 if (hostIp != null)
                 {
-                    SendUdpPayload(hostIp, 38899, payload);
+                    Functions.SendUdpPayload(hostIp, 38899, payload);
                 }
             }
             else
@@ -309,7 +374,7 @@ namespace WinFormsApp4
             }
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private async void button5_Click(object sender, EventArgs e)
         {
             PeformScan();
             SuccessLabelShowFor("Done", 1000);
@@ -317,14 +382,24 @@ namespace WinFormsApp4
 
         private void button6_Click(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedItem != null)
+            if (comboBox3.SelectedIndex != 0 && comboBox3.SelectedItem != null)
+            {
+                foreach (var line in richTextBox1.Lines)
+                {
+                    if (line != "")
+                    {
+                        string ip = ipstr_ip[line];
+                        Functions.TurnOffLight(ip, 38899);
+                    }
+                }
+
+            }
+            else if (comboBox1.SelectedItem != null)
             {
                 string hostIp = ipstr_ip[comboBox1.SelectedItem.ToString()];
-                string payload = $"{{\"method\":\"setPilot\",\"params\":{{\"state\":false}}}}";
-
                 if (hostIp != null)
                 {
-                    SendUdpPayload(hostIp, 38899, payload);
+                    Functions.TurnOffLight(hostIp, 38899);
                 }
             }
             else
@@ -335,14 +410,24 @@ namespace WinFormsApp4
 
         private void button7_Click(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedItem != null)
+            if (comboBox3.SelectedIndex != 0 && comboBox3.SelectedItem != null)
+            {
+                foreach (var line in richTextBox1.Lines)
+                {
+                    if (line != "")
+                    {
+                        string ip = ipstr_ip[line];
+                        Functions.TurnOnLight(ip, 38899);
+                    }
+                }
+
+            }
+            else if (comboBox1.SelectedItem != null)
             {
                 string hostIp = ipstr_ip[comboBox1.SelectedItem.ToString()];
-                string payload = $"{{\"method\":\"setPilot\",\"params\":{{\"state\":true}}}}";
-
                 if (hostIp != null)
                 {
-                    SendUdpPayload(hostIp, 38899, payload);
+                    Functions.TurnOnLight(hostIp, 38899);
                 }
             }
             else
@@ -380,13 +465,124 @@ namespace WinFormsApp4
 
                 if (hostIp != null)
                 {
-                    SendUdpPayload(hostIp, 38899, payload1);
-                    SendUdpPayload(hostIp, 38899, payload2);
+                    Functions.SendUdpPayload(hostIp, 38899, payload1);
+                    Functions.SendUdpPayload(hostIp, 38899, payload2);
                 }
             }
             else
             {
                 ErrorLabelShowFor("No Bulb Selected", 1000);
+            }
+        }
+
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
+
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked)
+            {
+                int brightnessLevel = trackBar1.Value;
+                if (comboBox3.SelectedIndex != 0 && comboBox3.SelectedItem != null)
+                {
+                    foreach (var line in richTextBox1.Lines)
+                    {
+                        if (line != "")
+                        {
+                            string ip = ipstr_ip[line];
+                            Functions.SetBrightness(ip, 38899, brightnessLevel);
+                        }
+                    }
+
+                }
+                else if (comboBox1.SelectedItem != null)
+                {
+                    string hostIp = ipstr_ip[comboBox1.SelectedItem.ToString()];
+                    if (hostIp != null)
+                    {
+                        Functions.SetBrightness(hostIp, 38899, brightnessLevel);
+                    }
+                }
+                else
+                {
+                    ErrorLabelShowFor("No Bulb Selected", 1000);
+                }
+            }
+        }
+
+
+
+        private async void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+            string cacheJson = File.ReadAllText("cache.json");
+            try
+            {
+                cachedSettings["checkBox1.Checked"] = checkBox1.Checked;
+            }
+            catch (KeyNotFoundException)
+            {
+                cachedSettings.Add("checkBox1.Checked", checkBox1.Checked);
+            }
+            finally
+            {
+                File.WriteAllText("cache.json", JsonConvert.SerializeObject(cachedSettings, Formatting.Indented));
+            }
+        }
+
+        private async void groupBox6_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox1.SelectedItem != null)
+            {
+                string ip = ipstr_ip[comboBox1.SelectedItem.ToString()];
+                string response = await Functions.GetState(ip, 38899);
+                if (response != string.Empty)
+                {
+                    richTextBox2.Text = response;
+                }
+                else
+                {
+                    richTextBox2.Text = "(No response received.)";
+                }
+            }
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            richTextBox1.Text = string.Empty;
+            //comboBox1.SelectedIndex = 0;
+            if (comboBox3.SelectedIndex == 0)
+            {
+                richTextBox1.Text = "";
+            }
+            else if (comboBox3.SelectedIndex == 1)
+            {
+                foreach (var item in ipstr_ip)
+                {
+                    richTextBox1.Text += item.Key + "\n";
+                }
+            }
+            else
+            {
+                string group = comboBox3.SelectedItem.ToString();
+                List<string> bulbs = groups[group];
+                foreach (var bulb in bulbs)
+                {
+                    foreach (var item in ipstr_ip)
+                    {
+                        if (bulb == item.Value)
+                        {
+                            richTextBox1.Text += item.Key + "\n";
+                        }
+                    }
+                }
             }
         }
     }
