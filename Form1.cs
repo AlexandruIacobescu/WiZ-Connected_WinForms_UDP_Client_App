@@ -93,7 +93,7 @@ namespace WinFormsApp4
                     ErrorLabelShowFor("Bulb name already added", 1000);
                 }
             }
-        }        
+        }
 
         async private void SuccessLabelShowFor(string msg, int delay)
         {
@@ -132,21 +132,21 @@ namespace WinFormsApp4
         {
             redLabel.Text = trackBar3.Value.ToString();
             pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar4.Value, trackBar5.Value);
-            label11.Text = RGBToHex(trackBar3.Value, trackBar4.Value, trackBar5.Value);
+            textBox3.Text = RGBToHex(trackBar3.Value, trackBar4.Value, trackBar5.Value);
         }
 
         private void trackBar4_ValueChanged(object sender, EventArgs e)
         {
             greenLabel.Text = trackBar4.Value.ToString();
             pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar4.Value, trackBar5.Value);
-            label11.Text = RGBToHex(trackBar3.Value, trackBar4.Value, trackBar5.Value);
+            textBox3.Text = RGBToHex(trackBar3.Value, trackBar4.Value, trackBar5.Value);
         }
 
         private void trackBar5_ValueChanged(object sender, EventArgs e)
         {
             blueLabel.Text = trackBar5.Value.ToString();
             pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar4.Value, trackBar5.Value);
-            label11.Text = RGBToHex(trackBar3.Value, trackBar4.Value, trackBar5.Value);
+            textBox3.Text = RGBToHex(trackBar3.Value, trackBar4.Value, trackBar5.Value);
         }
 
         private void trackBar6_ValueChanged(object sender, EventArgs e)
@@ -261,7 +261,7 @@ namespace WinFormsApp4
 
             // Initizlize Preview
             pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar4.Value, trackBar5.Value);
-            label11.Text = RGBToHex(trackBar3.Value, trackBar4.Value, trackBar5.Value);
+            textBox3.Text = RGBToHex(trackBar3.Value, trackBar4.Value, trackBar5.Value);
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -352,21 +352,65 @@ namespace WinFormsApp4
         {
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private async void button4_Click(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedItem != null)
+            if (comboBox3.SelectedIndex != 0 && comboBox3.SelectedItem != null)
             {
-                string r = trackBar3.Value.ToString();
-                string g = trackBar4.Value.ToString();
-                string b = trackBar5.Value.ToString();
-                string w = trackBar6.Value.ToString();
-                string payload = $"{{\"method\":\"setPilot\",\"params\":{{\"state\":true,\"r\":{r},\"g\":{g},\"b\":{b},\"w\":{w}}}}}";
-                string hostIp = ipstr_ip[comboBox1.SelectedItem.ToString()];
+                int r = trackBar3.Value;
+                int g = trackBar4.Value;
+                int b = trackBar5.Value;
+                int w = trackBar6.Value;
+                var RGBW = ColorConverter.RGBToRGBW(r, g, b);
+                bool once = false;
 
-                if (hostIp != null)
+                foreach (var line in richTextBox1.Lines)
                 {
-                    Functions.SendUdpPayload(hostIp, 38899, payload);
+                    if (line != "")
+                    {
+                        string ip = ipstr_ip[line];
+                        if (checkBox3.Checked)
+                        {
+                            Functions.SetRGBW(ip, 38899, r, g, b, w);
+                        }
+                        else
+                        {
+                            Functions.SetRGBW(ip, 38899, RGBW.R, RGBW.G, RGBW.B, RGBW.W);
+                        }
+                        if (!once)
+                        {
+                            richTextBox2.Text = await Functions.GetState(ip, 38899);
+                            once = true;
+                        }
+                    }
                 }
+            }
+            else if (comboBox1.SelectedItem != null)
+            {
+                string hostIp = ipstr_ip[comboBox1.SelectedItem.ToString()];
+                if (checkBox3.Checked)
+                {
+                    int r = trackBar3.Value;
+                    int g = trackBar4.Value;
+                    int b = trackBar5.Value;
+                    int w = trackBar6.Value;
+
+                    if (hostIp != null)
+                    {
+                        Functions.SetRGBW(hostIp, 38899, r, g, b, w);
+                    }
+                }
+                else
+                {
+                    int r = trackBar3.Value;
+                    int g = trackBar4.Value;
+                    int b = trackBar5.Value;
+                    var rgbw = ColorConverter.RGBToRGBW(r, g, b);
+                    if (hostIp != null)
+                    {
+                        Functions.SetRGBW(hostIp, 38899, rgbw.R, rgbw.G, rgbw.B, rgbw.W);
+                    }
+                }
+                richTextBox2.Text = await Functions.GetState(hostIp, 38899);
             }
             else
             {
@@ -583,6 +627,39 @@ namespace WinFormsApp4
                         }
                     }
                 }
+            }
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox3.Checked)
+            {
+                trackBar6.Visible = true;
+                label7.Visible = true;
+                whiteLabel.Visible = true;
+            }
+            else
+            {
+                trackBar6.Visible = false;
+                label7.Visible = false;
+                whiteLabel.Visible = false;
+            }
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox2.Checked)
+            {
+
+            }
+        }
+
+        private async void button10_Click(object sender, EventArgs e)
+        {
+            if (comboBox1.SelectedItem != null)
+            {
+                string ip = ipstr_ip[comboBox1.SelectedItem.ToString()];
+                richTextBox2.Text = await Functions.GetState(ip, 38899);
             }
         }
     }

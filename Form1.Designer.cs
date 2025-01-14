@@ -62,8 +62,7 @@
             groupBox3 = new GroupBox();
             button3 = new Button();
             groupBox4 = new GroupBox();
-            label12 = new Label();
-            label11 = new Label();
+            textBox3 = new TextBox();
             pictureBox1 = new PictureBox();
             button4 = new Button();
             groupBox5 = new GroupBox();
@@ -74,15 +73,16 @@
             comboBox2 = new ComboBox();
             label3 = new Label();
             groupBox6 = new GroupBox();
+            checkBox3 = new CheckBox();
+            checkBox2 = new CheckBox();
             checkBox1 = new CheckBox();
             groupBox7 = new GroupBox();
             richTextBox1 = new RichTextBox();
             label14 = new Label();
             comboBox3 = new ComboBox();
-            colorDialog1 = new ColorDialog();
             groupBox8 = new GroupBox();
             richTextBox2 = new RichTextBox();
-            checkBox2 = new CheckBox();
+            button10 = new Button();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar4).BeginInit();
@@ -153,7 +153,7 @@
             // 
             // trackBar5
             // 
-            trackBar5.Location = new Point(85, 325);
+            trackBar5.Location = new Point(80, 312);
             trackBar5.Margin = new Padding(2, 3, 2, 3);
             trackBar5.Maximum = 255;
             trackBar5.Name = "trackBar5";
@@ -173,7 +173,7 @@
             // 
             // trackBar6
             // 
-            trackBar6.Location = new Point(85, 446);
+            trackBar6.Location = new Point(80, 421);
             trackBar6.Margin = new Padding(2, 3, 2, 3);
             trackBar6.Maximum = 255;
             trackBar6.Name = "trackBar6";
@@ -221,7 +221,7 @@
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             label6.ForeColor = Color.Blue;
-            label6.Location = new Point(39, 336);
+            label6.Location = new Point(42, 312);
             label6.Margin = new Padding(2, 0, 2, 0);
             label6.Name = "label6";
             label6.Size = new Size(37, 41);
@@ -233,7 +233,7 @@
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             label7.ForeColor = Color.Gray;
-            label7.Location = new Point(39, 446);
+            label7.Location = new Point(39, 421);
             label7.Margin = new Padding(2, 0, 2, 0);
             label7.Name = "label7";
             label7.Size = new Size(48, 41);
@@ -293,7 +293,7 @@
             // whiteLabel
             // 
             whiteLabel.AutoSize = true;
-            whiteLabel.Location = new Point(811, 446);
+            whiteLabel.Location = new Point(807, 421);
             whiteLabel.Margin = new Padding(2, 0, 2, 0);
             whiteLabel.Name = "whiteLabel";
             whiteLabel.Size = new Size(113, 41);
@@ -479,8 +479,7 @@
             // 
             // groupBox4
             // 
-            groupBox4.Controls.Add(label12);
-            groupBox4.Controls.Add(label11);
+            groupBox4.Controls.Add(textBox3);
             groupBox4.Controls.Add(pictureBox1);
             groupBox4.Controls.Add(button4);
             groupBox4.Controls.Add(trackBar3);
@@ -504,33 +503,21 @@
             groupBox4.TabStop = false;
             groupBox4.Text = "Color";
             // 
-            // label12
+            // textBox3
             // 
-            label12.AutoSize = true;
-            label12.Location = new Point(576, 588);
-            label12.Margin = new Padding(2, 0, 2, 0);
-            label12.Name = "label12";
-            label12.Size = new Size(79, 41);
-            label12.TabIndex = 22;
-            label12.Text = "Hue:";
-            // 
-            // label11
-            // 
-            label11.AutoSize = true;
-            label11.Location = new Point(542, 629);
-            label11.Margin = new Padding(2, 0, 2, 0);
-            label11.Name = "label11";
-            label11.Size = new Size(113, 41);
-            label11.TabIndex = 21;
-            label11.Text = "label11";
+            textBox3.Location = new Point(575, 647);
+            textBox3.Name = "textBox3";
+            textBox3.ReadOnly = true;
+            textBox3.Size = new Size(350, 47);
+            textBox3.TabIndex = 21;
             // 
             // pictureBox1
             // 
             pictureBox1.BackColor = SystemColors.ActiveCaption;
-            pictureBox1.Location = new Point(680, 566);
+            pictureBox1.Location = new Point(575, 524);
             pictureBox1.Margin = new Padding(2, 3, 2, 3);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(243, 101);
+            pictureBox1.Size = new Size(350, 101);
             pictureBox1.TabIndex = 20;
             pictureBox1.TabStop = false;
             // 
@@ -629,6 +616,7 @@
             // 
             // groupBox6
             // 
+            groupBox6.Controls.Add(checkBox3);
             groupBox6.Controls.Add(checkBox2);
             groupBox6.Controls.Add(checkBox1);
             groupBox6.Location = new Point(1077, 1020);
@@ -640,6 +628,30 @@
             groupBox6.TabStop = false;
             groupBox6.Text = "Settings";
             groupBox6.Enter += groupBox6_Enter;
+            // 
+            // checkBox3
+            // 
+            checkBox3.AutoSize = true;
+            checkBox3.Checked = true;
+            checkBox3.CheckState = CheckState.Checked;
+            checkBox3.Location = new Point(47, 178);
+            checkBox3.Name = "checkBox3";
+            checkBox3.Size = new Size(240, 45);
+            checkBox3.TabIndex = 2;
+            checkBox3.Text = "Manual White";
+            checkBox3.UseVisualStyleBackColor = true;
+            checkBox3.CheckedChanged += checkBox3_CheckedChanged;
+            // 
+            // checkBox2
+            // 
+            checkBox2.AutoSize = true;
+            checkBox2.Location = new Point(46, 127);
+            checkBox2.Name = "checkBox2";
+            checkBox2.Size = new Size(375, 45);
+            checkBox2.TabIndex = 1;
+            checkBox2.Text = "Sync State with Controls";
+            checkBox2.UseVisualStyleBackColor = true;
+            checkBox2.CheckedChanged += checkBox2_CheckedChanged;
             // 
             // checkBox1
             // 
@@ -696,6 +708,7 @@
             // 
             // groupBox8
             // 
+            groupBox8.Controls.Add(button10);
             groupBox8.Controls.Add(richTextBox2);
             groupBox8.Location = new Point(2078, 681);
             groupBox8.Name = "groupBox8";
@@ -706,22 +719,23 @@
             // 
             // richTextBox2
             // 
+            richTextBox2.Font = new Font("Consolas", 9F, FontStyle.Regular, GraphicsUnit.Point);
             richTextBox2.Location = new Point(24, 74);
             richTextBox2.Name = "richTextBox2";
             richTextBox2.ReadOnly = true;
-            richTextBox2.Size = new Size(695, 613);
+            richTextBox2.Size = new Size(685, 534);
             richTextBox2.TabIndex = 0;
             richTextBox2.Text = "";
             // 
-            // checkBox2
+            // button10
             // 
-            checkBox2.AutoSize = true;
-            checkBox2.Location = new Point(46, 127);
-            checkBox2.Name = "checkBox2";
-            checkBox2.Size = new Size(375, 45);
-            checkBox2.TabIndex = 1;
-            checkBox2.Text = "Sync State with Controls";
-            checkBox2.UseVisualStyleBackColor = true;
+            button10.Location = new Point(26, 632);
+            button10.Name = "button10";
+            button10.Size = new Size(188, 58);
+            button10.TabIndex = 1;
+            button10.Text = "Refresh";
+            button10.UseVisualStyleBackColor = true;
+            button10.Click += button10_Click;
             // 
             // Form1
             // 
@@ -810,8 +824,6 @@
         private ComboBox comboBox2;
         private Label label3;
         private PictureBox pictureBox1;
-        private Label label11;
-        private Label label12;
         private Button button6;
         private Button button7;
         private Button button8;
@@ -823,9 +835,11 @@
         private Label label14;
         private ComboBox comboBox3;
         private RichTextBox richTextBox1;
-        private ColorDialog colorDialog1;
         private GroupBox groupBox8;
         private RichTextBox richTextBox2;
         private CheckBox checkBox2;
+        private CheckBox checkBox3;
+        private TextBox textBox3;
+        private Button button10;
     }
 }

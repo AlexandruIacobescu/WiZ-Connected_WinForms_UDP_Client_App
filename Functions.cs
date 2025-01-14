@@ -11,6 +11,32 @@ namespace WinFormsApp4
 {
     internal class Functions
     {
+        public static (int R, int G, int B, int W) ConvertToRGBW(int red, int green, int blue)
+        {
+            // Normalize RGB values to the range 0.0 - 1.0
+            double rNorm = red / 255.0;
+            double gNorm = green / 255.0;
+            double bNorm = blue / 255.0;
+
+            // Calculate the white component
+            double white = Math.Min(rNorm, Math.Min(gNorm, bNorm));
+
+            // Subtract the white component from the RGB values
+            double rPrime = rNorm - white;
+            double gPrime = gNorm - white;
+            double bPrime = bNorm - white;
+
+            // Scale back to 0-255 and clamp to ensure valid values
+            int rFinal = (int)Math.Clamp(rPrime * 255, 0, 255);
+            int gFinal = (int)Math.Clamp(gPrime * 255, 0, 255);
+            int bFinal = (int)Math.Clamp(bPrime * 255, 0, 255);
+            int wFinal = (int)Math.Clamp(white * 255, 0, 255);
+
+            return (rFinal, gFinal, bFinal, wFinal);
+        }
+
+
+
         public static async Task<string> GetState(string hostIp, int port)
         {
             string payload = JsonConvert.SerializeObject(new
@@ -60,20 +86,10 @@ namespace WinFormsApp4
             }
         }
 
-        public static void TurnOnLights(List<string> ips, int port)
-        {
-
-        }
-
         public static void TurnOnLight(string ip, int port)
         {
             string payload = "{\"method\":\"setPilot\",\"params\":{\"state\":true}}";
             SendUdpPayload(ip, port, payload);
-        }
-
-        public static void TurnOffLights(List<string> ips, int port)
-        {
-
         }
 
         public static void TurnOffLight(string ip, int port)
@@ -99,6 +115,16 @@ namespace WinFormsApp4
                 throw new ArgumentOutOfRangeException("Temperature must be between 2200 and 6500.");
             }
             string payload = $"{{\"method\":\"setPilot\",\"params\":{{\"state\":true,\"temp\":{kelvins}}}}}";
+            SendUdpPayload(ip, port, payload);
+        }
+
+        public static void SetRGBW(string ip, int port, int red, int green, int blue, int white)
+        {
+            if (red < 0 || red > 255 || green < 0 || green > 255 || blue < 0 || blue > 255 || white < 0 || white > 255)
+            {
+                throw new ArgumentOutOfRangeException("RGBW values must be between 0 and 255.");
+            }
+            string payload = $"{{\"method\":\"setPilot\",\"params\":{{\"state\":true,\"r\":{red},\"g\":{green},\"b\":{blue},\"w\":{white}}}}}";
             SendUdpPayload(ip, port, payload);
         }
 
