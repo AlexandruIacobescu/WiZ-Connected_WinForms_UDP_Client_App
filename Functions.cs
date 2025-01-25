@@ -35,8 +35,6 @@ namespace WinFormsApp4
             return (rFinal, gFinal, bFinal, wFinal);
         }
 
-
-
         public static async Task<string> GetState(string hostIp, int port)
         {
             string payload = JsonConvert.SerializeObject(new
@@ -86,15 +84,60 @@ namespace WinFormsApp4
             }
         }
 
+        public static void SetScene(string hostIp, int port, int sceneId)
+        {
+            string payload = JsonConvert.SerializeObject(new
+            {
+                method = "setPilot",
+                @params = new
+                {
+                    state = true,
+                    sceneId = sceneId
+                }
+            });
+            SendUdpPayload(hostIp, port, payload);
+        }
+
+        public static void SetSpeed(string hostIp, int port, int speed)
+        {
+            if (speed < 1 || speed > 200)
+            {
+                throw new ArgumentOutOfRangeException("Speed must be between 1 and 100.");
+            }
+            string payload = JsonConvert.SerializeObject(new
+            {
+                method = "setPilot",
+                @params = new
+                {
+                    speed = speed
+                }
+            });
+            SendUdpPayload(hostIp, port, payload);
+        }
+
         public static void TurnOnLight(string ip, int port)
         {
-            string payload = "{\"method\":\"setPilot\",\"params\":{\"state\":true}}";
+            string payload = JsonConvert.SerializeObject(new
+            {
+                method = "setPilot",
+                @params = new
+                {
+                    state = true
+                }
+            });
             SendUdpPayload(ip, port, payload);
         }
 
         public static void TurnOffLight(string ip, int port)
         {
-            string payload = "{\"method\":\"setPilot\",\"params\":{\"state\":false}}";
+            string payload = JsonConvert.SerializeObject(new
+            {
+                method = "setPilot",
+                @params = new
+                {
+                    state = false
+                }
+            });
             SendUdpPayload(ip, port, payload);
         }
 
@@ -104,8 +147,16 @@ namespace WinFormsApp4
             {
                 throw new ArgumentOutOfRangeException("Brightness must be between 10 and 100.");
             }
-            string payload = $"{{\"method\":\"setPilot\",\"params\":{{\"state\":true,\"dimming\":{brightnessLevel}}}}}";
-            SendUdpPayload(ip, port, payload);            
+            string payload = JsonConvert.SerializeObject(new
+            {
+                method = "setPilot",
+                @params = new
+                {
+                    state = true,
+                    dimming = brightnessLevel
+                }
+            });
+            SendUdpPayload(ip, port, payload);
         }
 
         public static void SetTemperature(string ip, int port, int kelvins)
@@ -114,7 +165,15 @@ namespace WinFormsApp4
             {
                 throw new ArgumentOutOfRangeException("Temperature must be between 2200 and 6500.");
             }
-            string payload = $"{{\"method\":\"setPilot\",\"params\":{{\"state\":true,\"temp\":{kelvins}}}}}";
+            string payload = JsonConvert.SerializeObject(new
+            {
+                method = "setPilot",
+                @params = new
+                {
+                    state = true,
+                    temp = kelvins
+                }
+            });
             SendUdpPayload(ip, port, payload);
         }
 
@@ -124,7 +183,40 @@ namespace WinFormsApp4
             {
                 throw new ArgumentOutOfRangeException("RGBW values must be between 0 and 255.");
             }
-            string payload = $"{{\"method\":\"setPilot\",\"params\":{{\"state\":true,\"r\":{red},\"g\":{green},\"b\":{blue},\"w\":{white}}}}}";
+            string payload = JsonConvert.SerializeObject(new
+            {
+                method = "setPilot",
+                @params = new
+                {
+                    state = true,
+                    r = red,
+                    g = green,
+                    b = blue,
+                    w = white
+                }
+            });
+            SendUdpPayload(ip, port, payload);
+        }
+
+        public static void SetRGBCW(string ip, int port, int red, int green, int blue, int coolWhite, int white)
+        {
+            if (red < 0 || red > 255 || green < 0 || green > 255 || blue < 0 || blue > 255 || white < 0 || white > 255 || coolWhite < 0 || coolWhite > 255)
+            {
+                throw new ArgumentOutOfRangeException("RGBCW values must be between 0 and 255.");
+            }
+            string payload = JsonConvert.SerializeObject(new
+            {
+                method = "setPilot",
+                @params = new
+                {
+                    state = true,
+                    r = red,
+                    g = green,
+                    b = blue,
+                    c = coolWhite,
+                    w = white
+                }
+            });
             SendUdpPayload(ip, port, payload);
         }
 

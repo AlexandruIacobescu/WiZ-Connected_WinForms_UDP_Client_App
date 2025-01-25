@@ -62,6 +62,9 @@
             groupBox3 = new GroupBox();
             button3 = new Button();
             groupBox4 = new GroupBox();
+            trackBar8 = new TrackBar();
+            coolWhiteLabel = new Label();
+            cwLabel = new Label();
             textBox3 = new TextBox();
             pictureBox1 = new PictureBox();
             button4 = new Button();
@@ -81,8 +84,8 @@
             label14 = new Label();
             comboBox3 = new ComboBox();
             groupBox8 = new GroupBox();
-            richTextBox2 = new RichTextBox();
             button10 = new Button();
+            richTextBox2 = new RichTextBox();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar4).BeginInit();
@@ -93,6 +96,7 @@
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBar8).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBar7).BeginInit();
@@ -179,6 +183,7 @@
             trackBar6.Name = "trackBar6";
             trackBar6.Size = new Size(724, 114);
             trackBar6.TabIndex = 11;
+            trackBar6.Scroll += trackBar6_Scroll;
             trackBar6.ValueChanged += trackBar6_ValueChanged;
             // 
             // label1
@@ -479,6 +484,9 @@
             // 
             // groupBox4
             // 
+            groupBox4.Controls.Add(trackBar8);
+            groupBox4.Controls.Add(coolWhiteLabel);
+            groupBox4.Controls.Add(cwLabel);
             groupBox4.Controls.Add(textBox3);
             groupBox4.Controls.Add(pictureBox1);
             groupBox4.Controls.Add(button4);
@@ -498,14 +506,47 @@
             groupBox4.Margin = new Padding(2, 3, 2, 3);
             groupBox4.Name = "groupBox4";
             groupBox4.Padding = new Padding(2, 3, 2, 3);
-            groupBox4.Size = new Size(979, 700);
+            groupBox4.Size = new Size(979, 888);
             groupBox4.TabIndex = 24;
             groupBox4.TabStop = false;
             groupBox4.Text = "Color";
             // 
+            // trackBar8
+            // 
+            trackBar8.Location = new Point(80, 526);
+            trackBar8.Margin = new Padding(2, 3, 2, 3);
+            trackBar8.Maximum = 255;
+            trackBar8.Name = "trackBar8";
+            trackBar8.Size = new Size(724, 114);
+            trackBar8.TabIndex = 22;
+            trackBar8.Scroll += trackBar8_Scroll;
+            trackBar8.ValueChanged += trackBar8_ValueChanged;
+            // 
+            // coolWhiteLabel
+            // 
+            coolWhiteLabel.AutoSize = true;
+            coolWhiteLabel.Location = new Point(807, 526);
+            coolWhiteLabel.Margin = new Padding(2, 0, 2, 0);
+            coolWhiteLabel.Name = "coolWhiteLabel";
+            coolWhiteLabel.Size = new Size(113, 41);
+            coolWhiteLabel.TabIndex = 24;
+            coolWhiteLabel.Text = "label13";
+            // 
+            // cwLabel
+            // 
+            cwLabel.AutoSize = true;
+            cwLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            cwLabel.ForeColor = Color.LightSteelBlue;
+            cwLabel.Location = new Point(39, 526);
+            cwLabel.Margin = new Padding(2, 0, 2, 0);
+            cwLabel.Name = "cwLabel";
+            cwLabel.Size = new Size(37, 41);
+            cwLabel.TabIndex = 23;
+            cwLabel.Text = "C";
+            // 
             // textBox3
             // 
-            textBox3.Location = new Point(575, 647);
+            textBox3.Location = new Point(570, 791);
             textBox3.Name = "textBox3";
             textBox3.ReadOnly = true;
             textBox3.Size = new Size(350, 47);
@@ -514,7 +555,7 @@
             // pictureBox1
             // 
             pictureBox1.BackColor = SystemColors.ActiveCaption;
-            pictureBox1.Location = new Point(575, 524);
+            pictureBox1.Location = new Point(570, 666);
             pictureBox1.Margin = new Padding(2, 3, 2, 3);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(350, 101);
@@ -523,7 +564,7 @@
             // 
             // button4
             // 
-            button4.Location = new Point(85, 607);
+            button4.Location = new Point(70, 778);
             button4.Margin = new Padding(2, 3, 2, 3);
             button4.Name = "button4";
             button4.Size = new Size(197, 60);
@@ -623,7 +664,7 @@
             groupBox6.Margin = new Padding(2, 3, 2, 3);
             groupBox6.Name = "groupBox6";
             groupBox6.Padding = new Padding(2, 3, 2, 3);
-            groupBox6.Size = new Size(967, 372);
+            groupBox6.Size = new Size(967, 562);
             groupBox6.TabIndex = 26;
             groupBox6.TabStop = false;
             groupBox6.Text = "Settings";
@@ -712,24 +753,14 @@
             groupBox8.Controls.Add(richTextBox2);
             groupBox8.Location = new Point(2078, 681);
             groupBox8.Name = "groupBox8";
-            groupBox8.Size = new Size(746, 713);
+            groupBox8.Size = new Size(746, 901);
             groupBox8.TabIndex = 28;
             groupBox8.TabStop = false;
             groupBox8.Text = "State";
             // 
-            // richTextBox2
-            // 
-            richTextBox2.Font = new Font("Consolas", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            richTextBox2.Location = new Point(24, 74);
-            richTextBox2.Name = "richTextBox2";
-            richTextBox2.ReadOnly = true;
-            richTextBox2.Size = new Size(685, 534);
-            richTextBox2.TabIndex = 0;
-            richTextBox2.Text = "";
-            // 
             // button10
             // 
-            button10.Location = new Point(26, 632);
+            button10.Location = new Point(24, 798);
             button10.Name = "button10";
             button10.Size = new Size(188, 58);
             button10.TabIndex = 1;
@@ -737,12 +768,22 @@
             button10.UseVisualStyleBackColor = true;
             button10.Click += button10_Click;
             // 
+            // richTextBox2
+            // 
+            richTextBox2.Font = new Font("Consolas", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            richTextBox2.Location = new Point(24, 74);
+            richTextBox2.Name = "richTextBox2";
+            richTextBox2.ReadOnly = true;
+            richTextBox2.Size = new Size(685, 706);
+            richTextBox2.TabIndex = 0;
+            richTextBox2.Text = "";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
-            ClientSize = new Size(2858, 1421);
+            ClientSize = new Size(2858, 1612);
             Controls.Add(groupBox8);
             Controls.Add(groupBox7);
             Controls.Add(groupBox6);
@@ -771,6 +812,7 @@
             groupBox3.PerformLayout();
             groupBox4.ResumeLayout(false);
             groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBar8).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             groupBox5.ResumeLayout(false);
             groupBox5.PerformLayout();
@@ -841,5 +883,8 @@
         private CheckBox checkBox3;
         private TextBox textBox3;
         private Button button10;
+        private TrackBar trackBar8;
+        private Label coolWhiteLabel;
+        private Label cwLabel;
     }
 }

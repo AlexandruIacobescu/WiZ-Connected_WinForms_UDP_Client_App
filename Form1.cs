@@ -2,6 +2,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using Newtonsoft.Json;
+using System.Windows.Forms.VisualStyles;
 
 namespace WinFormsApp4
 {
@@ -42,6 +43,35 @@ namespace WinFormsApp4
 
             Task.WaitAll(tasks.ToArray());
             return activeHosts;
+        }
+
+        public void UpdateControls(string ip, string stateJson)
+        {
+            dynamic state = JsonConvert.DeserializeObject(stateJson);
+            bool isOn = state.result.state;
+            int brightness = state.result.dimming;
+            Int32? temperature = state.result.temp;
+            Int32? red = state.result.r;
+            Int32? green = state.result.g;
+            Int32? blue = state.result.b;
+            Int32? white = state.result.w;
+            File.WriteAllText("debug.txt", $"dimming:{state.result.dimming}\ntemp:{state.result.temp}\nr:{state.result.r}\ng:{state.result.g}\nb:{state.result.b}\nw:{state.result.w}\n");
+            if (isOn)
+            {
+                trackBar1.Value = brightness;
+                if (temperature != null)
+                {
+                    trackBar2.Value = (int)temperature / 100;
+                }
+                if (red != null && green != null && blue != null && white != null)
+                {
+                    trackBar3.Value = (int)red;
+                    trackBar4.Value = (int)green;
+                    trackBar5.Value = (int)blue;
+                    trackBar6.Value = (int)white;
+                }
+
+            }
         }
 
         static string ScanHost(string host, int port, string payload, int timeout = 800)
@@ -178,6 +208,7 @@ namespace WinFormsApp4
             greenLabel.Text = trackBar5.Value.ToString();
             blueLabel.Text = trackBar3.Value.ToString();
             whiteLabel.Text = trackBar6.Value.ToString();
+            coolWhiteLabel.Text = trackBar8.Value.ToString();
             label13.Text = trackBar7.Value.ToString();
             comboBox3.Items.Add("(None)");
             comboBox3.Items.Add("(All)");
@@ -246,6 +277,14 @@ namespace WinFormsApp4
                 if (cachedSettings.ContainsKey("checkBox1.Checked"))
                 {
                     checkBox1.Checked = cachedSettings["checkBox1.Checked"];
+                }
+                if (cachedSettings.ContainsKey("checkBox2.Checked"))
+                {
+                    checkBox2.Checked = cachedSettings["checkBox2.Checked"];
+                }
+                if (cachedSettings.ContainsKey("checkBox3.Checked"))
+                {
+                    checkBox3.Checked = cachedSettings["checkBox3.Checked"];
                 }
             }
             catch (FileNotFoundException ex)
@@ -360,6 +399,8 @@ namespace WinFormsApp4
                 int g = trackBar4.Value;
                 int b = trackBar5.Value;
                 int w = trackBar6.Value;
+                int c = trackBar8.Value;
+
                 var RGBW = ColorConverter.RGBToRGBW(r, g, b);
                 bool once = false;
 
@@ -370,7 +411,7 @@ namespace WinFormsApp4
                         string ip = ipstr_ip[line];
                         if (checkBox3.Checked)
                         {
-                            Functions.SetRGBW(ip, 38899, r, g, b, w);
+                            Functions.SetRGBCW(ip, 38899, r, g, b, c, w);
                         }
                         else
                         {
@@ -393,10 +434,10 @@ namespace WinFormsApp4
                     int g = trackBar4.Value;
                     int b = trackBar5.Value;
                     int w = trackBar6.Value;
-
+                    int c = trackBar8.Value;
                     if (hostIp != null)
                     {
-                        Functions.SetRGBW(hostIp, 38899, r, g, b, w);
+                        Functions.SetRGBCW(hostIp, 38899, r, g, b, c, w);
                     }
                 }
                 else
@@ -497,9 +538,32 @@ namespace WinFormsApp4
             }
         }
 
-        private void button9_Click(object sender, EventArgs e)
+        private async void button9_Click(object sender, EventArgs e)
         {
-            if (comboBox2.SelectedItem != null && comboBox1.SelectedItem != null)
+            if (comboBox3.SelectedIndex != 0 && comboBox3.SelectedItem != null)
+            {
+                if (comboBox2.SelectedItem != null)
+                {
+                    int sceneId = scene_id[comboBox2.SelectedItem.ToString()];
+                    int speed = trackBar7.Value;
+                    bool once = false;
+                    foreach (var line in richTextBox1.Lines)
+                    {
+                        if (line != "")
+                        {
+                            string ip = ipstr_ip[line];
+                            Functions.SetScene(ip, 38899, sceneId);
+                            Functions.SetSpeed(ip, 38899, speed);
+                            if (!once)
+                            {
+                                richTextBox2.Text = await Functions.GetState(ip, 38899);
+                                once = true;
+                            }
+                        }
+                    }
+                }
+            }
+            else if (comboBox2.SelectedItem != null && comboBox1.SelectedItem != null)
             {
                 string hostIp = ipstr_ip[comboBox1.SelectedItem.ToString()];
                 string scene = comboBox2.SelectedItem.ToString();
@@ -560,10 +624,9 @@ namespace WinFormsApp4
 
         private async void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-
-            string cacheJson = File.ReadAllText("cache.json");
             try
             {
+                string cacheJson = await File.ReadAllTextAsync("cache.json");
                 cachedSettings["checkBox1.Checked"] = checkBox1.Checked;
             }
             catch (KeyNotFoundException)
@@ -572,7 +635,7 @@ namespace WinFormsApp4
             }
             finally
             {
-                File.WriteAllText("cache.json", JsonConvert.SerializeObject(cachedSettings, Formatting.Indented));
+                await File.WriteAllTextAsync("cache.json", JsonConvert.SerializeObject(cachedSettings, Formatting.Indented));
             }
         }
 
@@ -590,6 +653,7 @@ namespace WinFormsApp4
                 if (response != string.Empty)
                 {
                     richTextBox2.Text = response;
+                    UpdateControls(ip, response);
                 }
                 else
                 {
@@ -630,27 +694,56 @@ namespace WinFormsApp4
             }
         }
 
-        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        private async void checkBox3_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
                 trackBar6.Visible = true;
                 label7.Visible = true;
                 whiteLabel.Visible = true;
+                trackBar8.Visible = true;
+                cwLabel.Visible = true;
+                coolWhiteLabel.Visible = true;
             }
             else
             {
                 trackBar6.Visible = false;
                 label7.Visible = false;
                 whiteLabel.Visible = false;
+                trackBar8.Visible = false;
+                cwLabel.Visible = false;
+                coolWhiteLabel.Visible = false;
+            }
+
+            try
+            {
+                string cacheJson = await File.ReadAllTextAsync("cache.json");
+                cachedSettings["checkBox3.Checked"] = checkBox3.Checked;
+            }
+            catch (KeyNotFoundException)
+            {
+                cachedSettings.Add("checkBox3.Checked", checkBox3.Checked);
+            }
+            finally
+            {
+                await File.WriteAllTextAsync("cache.json", JsonConvert.SerializeObject(cachedSettings, Formatting.Indented));
             }
         }
 
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        private async void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBox2.Checked)
+            try
             {
-
+                string cacheJson = await File.ReadAllTextAsync("cache.json");
+                cachedSettings["checkBox2.Checked"] = checkBox2.Checked;
+            }
+            catch (KeyNotFoundException)
+            {
+                cachedSettings.Add("checkBox2.Checked", checkBox2.Checked);
+            }
+            finally
+            {
+                await File.WriteAllTextAsync("cache.json", JsonConvert.SerializeObject(cachedSettings, Formatting.Indented));
             }
         }
 
@@ -661,6 +754,21 @@ namespace WinFormsApp4
                 string ip = ipstr_ip[comboBox1.SelectedItem.ToString()];
                 richTextBox2.Text = await Functions.GetState(ip, 38899);
             }
+        }
+
+        private void trackBar8_Scroll(object sender, EventArgs e)
+        {
+
+        }
+
+        private void trackBar8_ValueChanged(object sender, EventArgs e)
+        {
+            coolWhiteLabel.Text = trackBar8.Value.ToString();
+        }
+
+        private void trackBar6_Scroll(object sender, EventArgs e)
+        {
+
         }
     }
 }
