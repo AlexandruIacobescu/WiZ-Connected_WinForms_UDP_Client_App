@@ -163,6 +163,10 @@ namespace WinFormsApp4
             redLabel.Text = trackBar3.Value.ToString();
             pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar4.Value, trackBar5.Value);
             textBox3.Text = RGBToHex(trackBar3.Value, trackBar4.Value, trackBar5.Value);
+            if (checkBox1.Checked)
+            {
+                button4_Click(sender, e);
+            }
         }
 
         private void trackBar4_ValueChanged(object sender, EventArgs e)
@@ -170,6 +174,10 @@ namespace WinFormsApp4
             greenLabel.Text = trackBar4.Value.ToString();
             pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar4.Value, trackBar5.Value);
             textBox3.Text = RGBToHex(trackBar3.Value, trackBar4.Value, trackBar5.Value);
+            if (checkBox1.Checked)
+            {
+                button4_Click(sender, e);
+            }
         }
 
         private void trackBar5_ValueChanged(object sender, EventArgs e)
@@ -177,16 +185,24 @@ namespace WinFormsApp4
             blueLabel.Text = trackBar5.Value.ToString();
             pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar4.Value, trackBar5.Value);
             textBox3.Text = RGBToHex(trackBar3.Value, trackBar4.Value, trackBar5.Value);
+            if (checkBox1.Checked)
+            {
+                button4_Click(sender, e);
+            }
         }
 
         private void trackBar6_ValueChanged(object sender, EventArgs e)
         {
             whiteLabel.Text = trackBar6.Value.ToString();
+            if (checkBox1.Checked)
+            {
+                button4_Click(sender, e);
+            }
         }
 
         private void trackBar7_ValueChanged(object sender, EventArgs e)
         {
-            label13.Text = trackBar7.Value.ToString();
+            label13.Text = trackBar7.Value.ToString();            
         }
 
         public static string RGBToHex(int red, int green, int blue)
@@ -764,9 +780,24 @@ namespace WinFormsApp4
         private void trackBar8_ValueChanged(object sender, EventArgs e)
         {
             coolWhiteLabel.Text = trackBar8.Value.ToString();
+            if (checkBox1.Checked)
+            {
+                button4_Click(sender, e);
+            }
         }
 
         private void trackBar6_Scroll(object sender, EventArgs e)
+        {
+
+        }
+
+        private void scenarioButton_Click(object sender, EventArgs e)
+        {
+            Form form = new Form2();
+            form.Show();
+        }
+
+        private void trackBar3_Scroll(object sender, EventArgs e)
         {
 
         }

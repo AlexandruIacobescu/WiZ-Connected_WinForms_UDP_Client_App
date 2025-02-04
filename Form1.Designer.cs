@@ -86,6 +86,7 @@
             groupBox8 = new GroupBox();
             button10 = new Button();
             richTextBox2 = new RichTextBox();
+            scenarioButton = new Button();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar4).BeginInit();
@@ -173,6 +174,7 @@
             trackBar3.Name = "trackBar3";
             trackBar3.Size = new Size(724, 114);
             trackBar3.TabIndex = 8;
+            trackBar3.Scroll += trackBar3_Scroll;
             trackBar3.ValueChanged += trackBar3_ValueChanged;
             // 
             // trackBar6
@@ -753,14 +755,14 @@
             groupBox8.Controls.Add(richTextBox2);
             groupBox8.Location = new Point(2078, 681);
             groupBox8.Name = "groupBox8";
-            groupBox8.Size = new Size(746, 901);
+            groupBox8.Size = new Size(746, 796);
             groupBox8.TabIndex = 28;
             groupBox8.TabStop = false;
             groupBox8.Text = "State";
             // 
             // button10
             // 
-            button10.Location = new Point(24, 798);
+            button10.Location = new Point(26, 713);
             button10.Name = "button10";
             button10.Size = new Size(188, 58);
             button10.TabIndex = 1;
@@ -774,9 +776,19 @@
             richTextBox2.Location = new Point(24, 74);
             richTextBox2.Name = "richTextBox2";
             richTextBox2.ReadOnly = true;
-            richTextBox2.Size = new Size(685, 706);
+            richTextBox2.Size = new Size(685, 613);
             richTextBox2.TabIndex = 0;
             richTextBox2.Text = "";
+            // 
+            // scenarioButton
+            // 
+            scenarioButton.Location = new Point(2079, 1510);
+            scenarioButton.Name = "scenarioButton";
+            scenarioButton.Size = new Size(302, 58);
+            scenarioButton.TabIndex = 29;
+            scenarioButton.Text = "Load Scenario...";
+            scenarioButton.UseVisualStyleBackColor = true;
+            scenarioButton.Click += scenarioButton_Click;
             // 
             // Form1
             // 
@@ -784,6 +796,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(2858, 1612);
+            Controls.Add(scenarioButton);
             Controls.Add(groupBox8);
             Controls.Add(groupBox7);
             Controls.Add(groupBox6);
@@ -796,6 +809,7 @@
             Controls.Add(comboBox1);
             Margin = new Padding(2, 3, 2, 3);
             Name = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "WiZ Connected Client";
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
@@ -886,5 +900,6 @@
         private TrackBar trackBar8;
         private Label coolWhiteLabel;
         private Label cwLabel;
+        private Button scenarioButton;
     }
 }
