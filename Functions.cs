@@ -122,7 +122,7 @@ namespace WinFormsApp4
                 method = "setPilot",
                 @params = new
                 {
-                    state = true
+                    state = true 
                 }
             });
             SendUdpPayload(ip, port, payload);

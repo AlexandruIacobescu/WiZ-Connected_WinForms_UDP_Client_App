@@ -45,7 +45,7 @@ namespace WinFormsApp4
             return activeHosts;
         }
 
-        public void UpdateControls(string ip, string stateJson)
+        public async void UpdateControls(string ip, string stateJson)
         {
             dynamic state = JsonConvert.DeserializeObject(stateJson);
             bool isOn = state.result.state;
@@ -55,7 +55,7 @@ namespace WinFormsApp4
             Int32? green = state.result.g;
             Int32? blue = state.result.b;
             Int32? white = state.result.w;
-            File.WriteAllText("debug.txt", $"dimming:{state.result.dimming}\ntemp:{state.result.temp}\nr:{state.result.r}\ng:{state.result.g}\nb:{state.result.b}\nw:{state.result.w}\n");
+            await File.WriteAllTextAsync("debug.txt", $"dimming:{state.result.dimming}\ntemp:{state.result.temp}\nr:{state.result.r}\ng:{state.result.g}\nb:{state.result.b}\nw:{state.result.w}\n");
             if (isOn)
             {
                 trackBar1.Value = brightness;
@@ -601,7 +601,33 @@ namespace WinFormsApp4
 
         private void trackBar2_Scroll(object sender, EventArgs e)
         {
-
+            if (checkBox1.Checked)
+            {
+                int temperature = trackBar2.Value * 100;
+                if (comboBox3.SelectedIndex != 0 && comboBox3.SelectedItem != null)
+                {
+                    foreach (var line in richTextBox1.Lines)
+                    {
+                        if (line != string.Empty)
+                        {
+                            string ip = ipstr_ip[line];
+                            Functions.SetTemperature(ip, 38899, temperature);
+                        }
+                    }
+                }
+                else if (comboBox1.SelectedItem != null)
+                {
+                    string hostIp = ipstr_ip[comboBox1.SelectedItem.ToString()];
+                    if (hostIp != null)
+                    {
+                        Functions.SetTemperature(hostIp, 38899, temperature);
+                    }
+                }
+                else
+                {
+                    ErrorLabelShowFor("No Bulb Selected", 1000);
+                }
+            }
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
@@ -635,8 +661,6 @@ namespace WinFormsApp4
                 }
             }
         }
-
-
 
         private async void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
