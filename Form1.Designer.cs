@@ -87,6 +87,7 @@
             button10 = new Button();
             richTextBox2 = new RichTextBox();
             scenarioButton = new Button();
+            DarkModeCheckBox = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar4).BeginInit();
@@ -111,7 +112,7 @@
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.FormattingEnabled = true;
             comboBox1.Location = new Point(516, 205);
-            comboBox1.Margin = new Padding(1, 1, 1, 1);
+            comboBox1.Margin = new Padding(1);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(328, 23);
             comboBox1.TabIndex = 3;
@@ -121,7 +122,7 @@
             // 
             trackBar1.LargeChange = 10;
             trackBar1.Location = new Point(35, 32);
-            trackBar1.Margin = new Padding(1, 1, 1, 1);
+            trackBar1.Margin = new Padding(1);
             trackBar1.Maximum = 100;
             trackBar1.Minimum = 10;
             trackBar1.Name = "trackBar1";
@@ -136,7 +137,7 @@
             // 
             trackBar2.LargeChange = 1;
             trackBar2.Location = new Point(35, 31);
-            trackBar2.Margin = new Padding(1, 1, 1, 1);
+            trackBar2.Margin = new Padding(1);
             trackBar2.Maximum = 65;
             trackBar2.Minimum = 22;
             trackBar2.Name = "trackBar2";
@@ -149,7 +150,7 @@
             // trackBar4
             // 
             trackBar4.Location = new Point(34, 75);
-            trackBar4.Margin = new Padding(1, 1, 1, 1);
+            trackBar4.Margin = new Padding(1);
             trackBar4.Maximum = 255;
             trackBar4.Name = "trackBar4";
             trackBar4.Size = new Size(298, 45);
@@ -159,7 +160,7 @@
             // trackBar5
             // 
             trackBar5.Location = new Point(33, 114);
-            trackBar5.Margin = new Padding(1, 1, 1, 1);
+            trackBar5.Margin = new Padding(1);
             trackBar5.Maximum = 255;
             trackBar5.Name = "trackBar5";
             trackBar5.Size = new Size(298, 45);
@@ -169,7 +170,7 @@
             // trackBar3
             // 
             trackBar3.Location = new Point(34, 35);
-            trackBar3.Margin = new Padding(1, 1, 1, 1);
+            trackBar3.Margin = new Padding(1);
             trackBar3.Maximum = 255;
             trackBar3.Name = "trackBar3";
             trackBar3.Size = new Size(298, 45);
@@ -180,7 +181,7 @@
             // trackBar6
             // 
             trackBar6.Location = new Point(33, 154);
-            trackBar6.Margin = new Padding(1, 1, 1, 1);
+            trackBar6.Margin = new Padding(1);
             trackBar6.Maximum = 255;
             trackBar6.Name = "trackBar6";
             trackBar6.Size = new Size(298, 45);
@@ -310,7 +311,7 @@
             // button1
             // 
             button1.Location = new Point(35, 76);
-            button1.Margin = new Padding(1, 1, 1, 1);
+            button1.Margin = new Padding(1);
             button1.Name = "button1";
             button1.Size = new Size(81, 22);
             button1.TabIndex = 5;
@@ -329,9 +330,9 @@
             groupBox1.Controls.Add(label8);
             groupBox1.Controls.Add(textBox1);
             groupBox1.Location = new Point(443, 15);
-            groupBox1.Margin = new Padding(1, 1, 1, 1);
+            groupBox1.Margin = new Padding(1);
             groupBox1.Name = "groupBox1";
-            groupBox1.Padding = new Padding(1, 1, 1, 1);
+            groupBox1.Padding = new Padding(1);
             groupBox1.Size = new Size(398, 179);
             groupBox1.TabIndex = 21;
             groupBox1.TabStop = false;
@@ -340,7 +341,7 @@
             // button8
             // 
             button8.Location = new Point(278, 99);
-            button8.Margin = new Padding(1, 1, 1, 1);
+            button8.Margin = new Padding(1);
             button8.Name = "button8";
             button8.Size = new Size(77, 21);
             button8.TabIndex = 7;
@@ -351,7 +352,7 @@
             // button5
             // 
             button5.Location = new Point(143, 99);
-            button5.Margin = new Padding(1, 1, 1, 1);
+            button5.Margin = new Padding(1);
             button5.Name = "button5";
             button5.Size = new Size(100, 21);
             button5.TabIndex = 6;
@@ -372,7 +373,7 @@
             // textBox2
             // 
             textBox2.Location = new Point(50, 64);
-            textBox2.Margin = new Padding(1, 1, 1, 1);
+            textBox2.Margin = new Padding(1);
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(307, 23);
             textBox2.TabIndex = 1;
@@ -394,7 +395,7 @@
             // button2
             // 
             button2.Location = new Point(50, 99);
-            button2.Margin = new Padding(1, 1, 1, 1);
+            button2.Margin = new Padding(1);
             button2.Name = "button2";
             button2.Size = new Size(77, 21);
             button2.TabIndex = 2;
@@ -415,7 +416,7 @@
             // textBox1
             // 
             textBox1.Location = new Point(50, 32);
-            textBox1.Margin = new Padding(1, 1, 1, 1);
+            textBox1.Margin = new Padding(1);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(307, 23);
             textBox1.TabIndex = 0;
@@ -429,9 +430,9 @@
             groupBox2.Controls.Add(brgLabel);
             groupBox2.Controls.Add(button1);
             groupBox2.Location = new Point(23, 15);
-            groupBox2.Margin = new Padding(1, 1, 1, 1);
+            groupBox2.Margin = new Padding(1);
             groupBox2.Name = "groupBox2";
-            groupBox2.Padding = new Padding(1, 1, 1, 1);
+            groupBox2.Padding = new Padding(1);
             groupBox2.Size = new Size(403, 108);
             groupBox2.TabIndex = 22;
             groupBox2.TabStop = false;
@@ -440,7 +441,7 @@
             // button7
             // 
             button7.Location = new Point(217, 76);
-            button7.Margin = new Padding(1, 1, 1, 1);
+            button7.Margin = new Padding(1);
             button7.Name = "button7";
             button7.Size = new Size(77, 21);
             button7.TabIndex = 16;
@@ -451,7 +452,7 @@
             // button6
             // 
             button6.Location = new Point(302, 76);
-            button6.Margin = new Padding(1, 1, 1, 1);
+            button6.Margin = new Padding(1);
             button6.Name = "button6";
             button6.Size = new Size(77, 21);
             button6.TabIndex = 15;
@@ -465,9 +466,9 @@
             groupBox3.Controls.Add(trackBar2);
             groupBox3.Controls.Add(tempLabel);
             groupBox3.Location = new Point(23, 131);
-            groupBox3.Margin = new Padding(1, 1, 1, 1);
+            groupBox3.Margin = new Padding(1);
             groupBox3.Name = "groupBox3";
-            groupBox3.Padding = new Padding(1, 1, 1, 1);
+            groupBox3.Padding = new Padding(1);
             groupBox3.Size = new Size(403, 108);
             groupBox3.TabIndex = 23;
             groupBox3.TabStop = false;
@@ -476,7 +477,7 @@
             // button3
             // 
             button3.Location = new Point(35, 70);
-            button3.Margin = new Padding(1, 1, 1, 1);
+            button3.Margin = new Padding(1);
             button3.Name = "button3";
             button3.Size = new Size(81, 22);
             button3.TabIndex = 7;
@@ -505,9 +506,9 @@
             groupBox4.Controls.Add(redLabel);
             groupBox4.Controls.Add(label7);
             groupBox4.Location = new Point(23, 254);
-            groupBox4.Margin = new Padding(1, 1, 1, 1);
+            groupBox4.Margin = new Padding(1);
             groupBox4.Name = "groupBox4";
-            groupBox4.Padding = new Padding(1, 1, 1, 1);
+            groupBox4.Padding = new Padding(1);
             groupBox4.Size = new Size(403, 325);
             groupBox4.TabIndex = 24;
             groupBox4.TabStop = false;
@@ -516,7 +517,7 @@
             // trackBar8
             // 
             trackBar8.Location = new Point(33, 192);
-            trackBar8.Margin = new Padding(1, 1, 1, 1);
+            trackBar8.Margin = new Padding(1);
             trackBar8.Maximum = 255;
             trackBar8.Name = "trackBar8";
             trackBar8.Size = new Size(298, 45);
@@ -549,7 +550,7 @@
             // textBox3
             // 
             textBox3.Location = new Point(235, 289);
-            textBox3.Margin = new Padding(1, 1, 1, 1);
+            textBox3.Margin = new Padding(1);
             textBox3.Name = "textBox3";
             textBox3.ReadOnly = true;
             textBox3.Size = new Size(146, 23);
@@ -559,7 +560,7 @@
             // 
             pictureBox1.BackColor = SystemColors.ActiveCaption;
             pictureBox1.Location = new Point(235, 244);
-            pictureBox1.Margin = new Padding(1, 1, 1, 1);
+            pictureBox1.Margin = new Padding(1);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(144, 37);
             pictureBox1.TabIndex = 20;
@@ -568,7 +569,7 @@
             // button4
             // 
             button4.Location = new Point(29, 285);
-            button4.Margin = new Padding(1, 1, 1, 1);
+            button4.Margin = new Padding(1);
             button4.Name = "button4";
             button4.Size = new Size(81, 22);
             button4.TabIndex = 12;
@@ -585,9 +586,9 @@
             groupBox5.Controls.Add(comboBox2);
             groupBox5.Controls.Add(label3);
             groupBox5.Location = new Point(443, 237);
-            groupBox5.Margin = new Padding(1, 1, 1, 1);
+            groupBox5.Margin = new Padding(1);
             groupBox5.Name = "groupBox5";
-            groupBox5.Padding = new Padding(1, 1, 1, 1);
+            groupBox5.Padding = new Padding(1);
             groupBox5.Size = new Size(398, 127);
             groupBox5.TabIndex = 25;
             groupBox5.TabStop = false;
@@ -606,7 +607,7 @@
             // button9
             // 
             button9.Location = new Point(31, 96);
-            button9.Margin = new Padding(1, 1, 1, 1);
+            button9.Margin = new Padding(1);
             button9.Name = "button9";
             button9.Size = new Size(77, 21);
             button9.TabIndex = 4;
@@ -628,7 +629,7 @@
             // 
             trackBar7.LargeChange = 20;
             trackBar7.Location = new Point(81, 62);
-            trackBar7.Margin = new Padding(1, 1, 1, 1);
+            trackBar7.Margin = new Padding(1);
             trackBar7.Maximum = 200;
             trackBar7.Minimum = 10;
             trackBar7.Name = "trackBar7";
@@ -643,7 +644,7 @@
             comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox2.FormattingEnabled = true;
             comboBox2.Location = new Point(81, 33);
-            comboBox2.Margin = new Padding(1, 1, 1, 1);
+            comboBox2.Margin = new Padding(1);
             comboBox2.Name = "comboBox2";
             comboBox2.Size = new Size(288, 23);
             comboBox2.TabIndex = 1;
@@ -660,13 +661,14 @@
             // 
             // groupBox6
             // 
+            groupBox6.Controls.Add(DarkModeCheckBox);
             groupBox6.Controls.Add(checkBox3);
             groupBox6.Controls.Add(checkBox2);
             groupBox6.Controls.Add(checkBox1);
             groupBox6.Location = new Point(443, 373);
-            groupBox6.Margin = new Padding(1, 1, 1, 1);
+            groupBox6.Margin = new Padding(1);
             groupBox6.Name = "groupBox6";
-            groupBox6.Padding = new Padding(1, 1, 1, 1);
+            groupBox6.Padding = new Padding(1);
             groupBox6.Size = new Size(398, 206);
             groupBox6.TabIndex = 26;
             groupBox6.TabStop = false;
@@ -679,7 +681,7 @@
             checkBox3.Checked = true;
             checkBox3.CheckState = CheckState.Checked;
             checkBox3.Location = new Point(19, 65);
-            checkBox3.Margin = new Padding(1, 1, 1, 1);
+            checkBox3.Margin = new Padding(1);
             checkBox3.Name = "checkBox3";
             checkBox3.Size = new Size(100, 19);
             checkBox3.TabIndex = 2;
@@ -691,7 +693,7 @@
             // 
             checkBox2.AutoSize = true;
             checkBox2.Location = new Point(19, 46);
-            checkBox2.Margin = new Padding(1, 1, 1, 1);
+            checkBox2.Margin = new Padding(1);
             checkBox2.Name = "checkBox2";
             checkBox2.Size = new Size(154, 19);
             checkBox2.TabIndex = 1;
@@ -716,9 +718,9 @@
             groupBox7.Controls.Add(label14);
             groupBox7.Controls.Add(comboBox3);
             groupBox7.Location = new Point(856, 15);
-            groupBox7.Margin = new Padding(1, 1, 1, 1);
+            groupBox7.Margin = new Padding(1);
             groupBox7.Name = "groupBox7";
-            groupBox7.Padding = new Padding(1, 1, 1, 1);
+            groupBox7.Padding = new Padding(1);
             groupBox7.RightToLeft = RightToLeft.No;
             groupBox7.Size = new Size(307, 225);
             groupBox7.TabIndex = 27;
@@ -728,7 +730,7 @@
             // richTextBox1
             // 
             richTextBox1.Location = new Point(11, 72);
-            richTextBox1.Margin = new Padding(1, 1, 1, 1);
+            richTextBox1.Margin = new Padding(1);
             richTextBox1.Name = "richTextBox1";
             richTextBox1.ReadOnly = true;
             richTextBox1.Size = new Size(284, 143);
@@ -750,7 +752,7 @@
             comboBox3.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox3.FormattingEnabled = true;
             comboBox3.Location = new Point(10, 45);
-            comboBox3.Margin = new Padding(1, 1, 1, 1);
+            comboBox3.Margin = new Padding(1);
             comboBox3.Name = "comboBox3";
             comboBox3.Size = new Size(284, 23);
             comboBox3.TabIndex = 0;
@@ -761,9 +763,9 @@
             groupBox8.Controls.Add(button10);
             groupBox8.Controls.Add(richTextBox2);
             groupBox8.Location = new Point(856, 249);
-            groupBox8.Margin = new Padding(1, 1, 1, 1);
+            groupBox8.Margin = new Padding(1);
             groupBox8.Name = "groupBox8";
-            groupBox8.Padding = new Padding(1, 1, 1, 1);
+            groupBox8.Padding = new Padding(1);
             groupBox8.Size = new Size(307, 291);
             groupBox8.TabIndex = 28;
             groupBox8.TabStop = false;
@@ -772,7 +774,7 @@
             // button10
             // 
             button10.Location = new Point(11, 261);
-            button10.Margin = new Padding(1, 1, 1, 1);
+            button10.Margin = new Padding(1);
             button10.Name = "button10";
             button10.Size = new Size(77, 21);
             button10.TabIndex = 1;
@@ -784,7 +786,7 @@
             // 
             richTextBox2.Font = new Font("Consolas", 9F, FontStyle.Regular, GraphicsUnit.Point);
             richTextBox2.Location = new Point(10, 27);
-            richTextBox2.Margin = new Padding(1, 1, 1, 1);
+            richTextBox2.Margin = new Padding(1);
             richTextBox2.Name = "richTextBox2";
             richTextBox2.ReadOnly = true;
             richTextBox2.Size = new Size(284, 227);
@@ -794,13 +796,24 @@
             // scenarioButton
             // 
             scenarioButton.Location = new Point(856, 552);
-            scenarioButton.Margin = new Padding(1, 1, 1, 1);
+            scenarioButton.Margin = new Padding(1);
             scenarioButton.Name = "scenarioButton";
             scenarioButton.Size = new Size(124, 21);
             scenarioButton.TabIndex = 29;
             scenarioButton.Text = "Load Scenario...";
             scenarioButton.UseVisualStyleBackColor = true;
             scenarioButton.Click += scenarioButton_Click;
+            // 
+            // DarkModeCheckBox
+            // 
+            DarkModeCheckBox.AutoSize = true;
+            DarkModeCheckBox.Location = new Point(19, 88);
+            DarkModeCheckBox.Name = "DarkModeCheckBox";
+            DarkModeCheckBox.Size = new Size(84, 19);
+            DarkModeCheckBox.TabIndex = 3;
+            DarkModeCheckBox.Text = "Dark Mode";
+            DarkModeCheckBox.UseVisualStyleBackColor = true;
+            DarkModeCheckBox.CheckedChanged += DarkModeCheckBox_CheckedChanged;
             // 
             // Form1
             // 
@@ -819,7 +832,7 @@
             Controls.Add(groupBox1);
             Controls.Add(label1);
             Controls.Add(comboBox1);
-            Margin = new Padding(1, 1, 1, 1);
+            Margin = new Padding(1);
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "WiZ Connected Client";
@@ -913,5 +926,6 @@
         private Label coolWhiteLabel;
         private Label cwLabel;
         private Button scenarioButton;
+        private CheckBox DarkModeCheckBox;
     }
 }

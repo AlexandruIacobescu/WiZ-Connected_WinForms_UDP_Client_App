@@ -45,6 +45,29 @@ namespace WinFormsApp4
             return activeHosts;
         }
 
+        static async Task<List<string>> ScanNetworkWithPythonInterop(int port)
+        {
+            string pyScriptPath = "scan.py"; // takes port as program argument, prints active IPs to stdout
+            var activeHosts = new List<string>();
+            var processStartInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "python",
+                Arguments = $"{pyScriptPath} {port}",
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+            var process = new System.Diagnostics.Process
+            {
+                StartInfo = processStartInfo
+            };
+            process.Start();
+            string output = await process.StandardOutput.ReadToEndAsync();
+            process.WaitForExit();
+            activeHosts = output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            return activeHosts;
+        }
+
         public async void UpdateControls(string ip, string stateJson)
         {
             dynamic state = JsonConvert.DeserializeObject(stateJson);
@@ -105,7 +128,8 @@ namespace WinFormsApp4
         async private void PeformScan()
         {
             int portToScan = 38899; // Change this to the desired port
-            var activeHosts = ScanNetwork(portToScan);
+            //var activeHosts = ScanNetwork(portToScan);
+            var activeHosts = await ScanNetworkWithPythonInterop(portToScan);
             foreach (string host in activeHosts)
             {
                 if (!ipstr_ip.ContainsValue(host))
@@ -202,7 +226,7 @@ namespace WinFormsApp4
 
         private void trackBar7_ValueChanged(object sender, EventArgs e)
         {
-            label13.Text = trackBar7.Value.ToString();            
+            label13.Text = trackBar7.Value.ToString();
         }
 
         public static string RGBToHex(int red, int green, int blue)
@@ -824,6 +848,33 @@ namespace WinFormsApp4
         private void trackBar3_Scroll(object sender, EventArgs e)
         {
 
+        }
+
+        private void DarkModeCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            bool darkMode = DarkModeCheckBox.Checked;
+
+            Color backColor = darkMode ? Color.FromArgb(60, 60, 60) : SystemColors.Control;
+            Color foreColor = darkMode ? Color.White : SystemColors.ControlText;
+
+            this.BackColor = backColor;
+            this.ForeColor = foreColor;
+
+            // Recursively update all controls
+            void SetControlColors(Control control)
+            {
+                control.BackColor = backColor;
+                control.ForeColor = foreColor;
+                foreach (Control child in control.Controls)
+                {
+                    SetControlColors(child);
+                }
+            }
+
+            foreach (Control ctrl in this.Controls)
+            {
+                SetControlColors(ctrl);
+            }
         }
     }
 }
