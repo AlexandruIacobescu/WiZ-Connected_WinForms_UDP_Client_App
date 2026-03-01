@@ -420,7 +420,15 @@ namespace WinFormsApp4
             {
                 string brightnessLevel = trackBar1.Value.ToString();
                 string hostIp = ipstr_ip[comboBox1.SelectedItem.ToString()];
-                string payload = $"{{\"method\":\"setPilot\",\"params\":{{\"state\":true,\"dimming\":{brightnessLevel}}}}}";
+                var payload = JsonConvert.SerializeObject(new
+                {
+                    method = "setPilot",
+                    @params = new
+                    {
+                        state = true,
+                        dimming = Int32.Parse(brightnessLevel)
+                    }
+                });
 
                 if (hostIp != null)
                 {
@@ -644,8 +652,23 @@ namespace WinFormsApp4
                 string hostIp = ipstr_ip[comboBox1.SelectedItem.ToString()];
                 string scene = comboBox2.SelectedItem.ToString();
                 int scene_id_int = scene_id[scene];
-                string payload1 = $"{{\"method\":\"setPilot\",\"params\":{{\"state\":true,\"sceneid\":{scene_id_int}}}}}";
-                string payload2 = $"{{\"method\":\"setPilot\",\"params\":{{\"speed\":{trackBar7.Value}}}}}";
+                var payload1 = JsonConvert.SerializeObject(new
+                {
+                    method = "setPilot",
+                    @params = new
+                    {
+                        state = true,
+                        sceneId = scene_id_int
+                    }
+                });
+                var payload2 = JsonConvert.SerializeObject(new
+                {
+                    method = "setPilot",
+                    @params = new
+                    {
+                        speed = trackBar7.Value
+                    }
+                });
 
                 if (hostIp != null)
                 {
