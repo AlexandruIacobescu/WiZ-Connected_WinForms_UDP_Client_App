@@ -17,6 +17,7 @@ namespace WinFormsApp4
 
         private Dictionary<string, List<string>> groups = new();
 
+        Dictionary<string, string> colors;
 
         static List<string> ScanNetwork(int port)
         {
@@ -24,7 +25,15 @@ namespace WinFormsApp4
             s.Connect("8.8.8.8", 80);
             var ip = s.LocalEndPoint.ToString().Split(".")[0..3];
             s.Close();
-            var payload = "{\"method\":\"registration\",\"params\":{\"register\":true}}";
+            // var payload = "{\"method\":\"registration\",\"params\":{\"register\":true}}";
+            var payload = JsonConvert.SerializeObject(new
+            {
+                method = "registration",
+                @params = new
+                {
+                    register = true
+                }
+            });
             var activeHosts = new List<string>();
 
             var tasks = new List<Task>();
@@ -167,6 +176,15 @@ namespace WinFormsApp4
             label9.Visible = false;
         }
 
+        async private void LabelShowFor(Label label, string msg, int delay, Color color)
+        {
+            label.ForeColor = color;
+            label.Text = msg;
+            label.Visible = true;
+            await Task.Delay(delay);
+            label.Visible = false;
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -253,6 +271,24 @@ namespace WinFormsApp4
             comboBox3.Items.Add("(None)");
             comboBox3.Items.Add("(All)");
             File.WriteAllText("error.log", string.Empty);
+
+            // load colors from json
+            try
+            {
+                string colorsJson = File.ReadAllText("my_colors.json");
+                colors = JsonConvert.DeserializeObject<Dictionary<string, string>>(colorsJson);
+                if (colors != null)
+                    foreach (var color in colors)
+                    {
+                        string colorStr = string.Format("{0}: {1}", color.Key, color.Value);
+                        colorsComboBox.Items.Add(colorStr);
+                    }
+            }
+            catch (Exception ignored)
+            {
+                LabelShowFor(colorErrorLabel, "Could not load colors from file", 4000, Color.Red);
+            }
+
 
             // load scenes from json
             string scenes_json = File.ReadAllText("scenes.json");
@@ -499,7 +535,7 @@ namespace WinFormsApp4
             }
         }
 
-        private async void button5_Click(object sender, EventArgs e)
+        private void button5_Click(object sender, EventArgs e)
         {
             PeformScan();
             SuccessLabelShowFor("Done", 1000);
@@ -875,6 +911,21 @@ namespace WinFormsApp4
             {
                 SetControlColors(ctrl);
             }
+        }
+
+        private void colorsComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

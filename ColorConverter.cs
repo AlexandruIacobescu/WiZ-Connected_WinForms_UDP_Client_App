@@ -16,6 +16,19 @@ namespace WinFormsApp4
             int bPrime = b - w;
             return (rPrime, gPrime, bPrime, w);
         }
+        public static (byte R, byte G, byte B) HexToRgb(string hex)
+        {
+            hex = hex.TrimStart('#');
+            
+            if (hex.Length != 6)
+                throw new ArgumentException("Hex string must be 6 characters (RRGGBB)", nameof(hex));
+
+            byte r = Convert.ToByte(hex.Substring(0, 2), 16);
+            byte g = Convert.ToByte(hex.Substring(2, 2), 16);
+            byte b = Convert.ToByte(hex.Substring(4, 2), 16);
+
+            return (r, g, b);
+        }
 
     }
 }

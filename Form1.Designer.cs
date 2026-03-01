@@ -76,6 +76,7 @@
             comboBox2 = new ComboBox();
             label3 = new Label();
             groupBox6 = new GroupBox();
+            DarkModeCheckBox = new CheckBox();
             checkBox3 = new CheckBox();
             checkBox2 = new CheckBox();
             checkBox1 = new CheckBox();
@@ -87,7 +88,11 @@
             button10 = new Button();
             richTextBox2 = new RichTextBox();
             scenarioButton = new Button();
-            DarkModeCheckBox = new CheckBox();
+            groupBox9 = new GroupBox();
+            colorErrorLabel = new Label();
+            button11 = new Button();
+            label11 = new Label();
+            colorsComboBox = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar4).BeginInit();
@@ -105,6 +110,7 @@
             groupBox6.SuspendLayout();
             groupBox7.SuspendLayout();
             groupBox8.SuspendLayout();
+            groupBox9.SuspendLayout();
             SuspendLayout();
             // 
             // comboBox1
@@ -648,6 +654,7 @@
             comboBox2.Name = "comboBox2";
             comboBox2.Size = new Size(288, 23);
             comboBox2.TabIndex = 1;
+            comboBox2.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
             // 
             // label3
             // 
@@ -674,6 +681,17 @@
             groupBox6.TabStop = false;
             groupBox6.Text = "Settings";
             groupBox6.Enter += groupBox6_Enter;
+            // 
+            // DarkModeCheckBox
+            // 
+            DarkModeCheckBox.AutoSize = true;
+            DarkModeCheckBox.Location = new Point(19, 88);
+            DarkModeCheckBox.Name = "DarkModeCheckBox";
+            DarkModeCheckBox.Size = new Size(84, 19);
+            DarkModeCheckBox.TabIndex = 3;
+            DarkModeCheckBox.Text = "Dark Mode";
+            DarkModeCheckBox.UseVisualStyleBackColor = true;
+            DarkModeCheckBox.CheckedChanged += DarkModeCheckBox_CheckedChanged;
             // 
             // checkBox3
             // 
@@ -804,23 +822,65 @@
             scenarioButton.UseVisualStyleBackColor = true;
             scenarioButton.Click += scenarioButton_Click;
             // 
-            // DarkModeCheckBox
+            // groupBox9
             // 
-            DarkModeCheckBox.AutoSize = true;
-            DarkModeCheckBox.Location = new Point(19, 88);
-            DarkModeCheckBox.Name = "DarkModeCheckBox";
-            DarkModeCheckBox.Size = new Size(84, 19);
-            DarkModeCheckBox.TabIndex = 3;
-            DarkModeCheckBox.Text = "Dark Mode";
-            DarkModeCheckBox.UseVisualStyleBackColor = true;
-            DarkModeCheckBox.CheckedChanged += DarkModeCheckBox_CheckedChanged;
+            groupBox9.Controls.Add(colorErrorLabel);
+            groupBox9.Controls.Add(button11);
+            groupBox9.Controls.Add(label11);
+            groupBox9.Controls.Add(colorsComboBox);
+            groupBox9.Location = new Point(23, 595);
+            groupBox9.Name = "groupBox9";
+            groupBox9.Size = new Size(1127, 118);
+            groupBox9.TabIndex = 30;
+            groupBox9.TabStop = false;
+            groupBox9.Text = "My Colors";
+            // 
+            // colorErrorLabel
+            // 
+            colorErrorLabel.AutoSize = true;
+            colorErrorLabel.Location = new Point(17, 81);
+            colorErrorLabel.Name = "colorErrorLabel";
+            colorErrorLabel.Size = new Size(44, 15);
+            colorErrorLabel.TabIndex = 3;
+            colorErrorLabel.Text = "label12";
+            colorErrorLabel.Visible = false;
+            // 
+            // button11
+            // 
+            button11.Location = new Point(334, 49);
+            button11.Name = "button11";
+            button11.Size = new Size(106, 23);
+            button11.TabIndex = 2;
+            button11.Text = "Fetch Colors";
+            button11.UseVisualStyleBackColor = true;
+            button11.Click += button11_Click;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new Point(16, 31);
+            label11.Name = "label11";
+            label11.Size = new Size(73, 15);
+            label11.TabIndex = 1;
+            label11.Text = "Select Color:";
+            // 
+            // colorsComboBox
+            // 
+            colorsComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            colorsComboBox.FormattingEnabled = true;
+            colorsComboBox.Location = new Point(16, 49);
+            colorsComboBox.Name = "colorsComboBox";
+            colorsComboBox.Size = new Size(315, 23);
+            colorsComboBox.TabIndex = 0;
+            colorsComboBox.SelectedIndexChanged += colorsComboBox_SelectedIndexChanged;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
-            ClientSize = new Size(1176, 587);
+            ClientSize = new Size(1176, 725);
+            Controls.Add(groupBox9);
             Controls.Add(scenarioButton);
             Controls.Add(groupBox8);
             Controls.Add(groupBox7);
@@ -861,6 +921,8 @@
             groupBox7.ResumeLayout(false);
             groupBox7.PerformLayout();
             groupBox8.ResumeLayout(false);
+            groupBox9.ResumeLayout(false);
+            groupBox9.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -927,5 +989,10 @@
         private Label cwLabel;
         private Button scenarioButton;
         private CheckBox DarkModeCheckBox;
+        private GroupBox groupBox9;
+        private Label colorErrorLabel;
+        private Button button11;
+        private Label label11;
+        private ComboBox colorsComboBox;
     }
 }
